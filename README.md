@@ -6,7 +6,7 @@ having to compile the modules with r.js.
 
 ## Credit
 Inspired by [jstd\_amd](https://github.com/mbreeze/jstd_amd), but distinct
-enough that is is not a fork.  `jstd\_amd` supports stubbing, and you access the
+enough that is is not a fork.  `jstd_amd` supports stubbing, and you access the
 dependencies a bit differently.  Otherwise, I copied the same technique of
 using `AsyncTestCase` to make sure the dependencies load before the setup method
 is called for the first test.  If you want to stub modules, check out
@@ -47,7 +47,7 @@ key to access the loaded module out of the `this.r` object.
 case.  Since we use `AsyncTestCase` behind the scenes, all the test methods are
 passed a queue object you can use for async testing if so needed.
 
-## JsTestDriver config
+## RequireJS/JsTestDriver config
 
 In `jsTestDriver.conf`, just make sure `require.js` and `require-js-testcase.js`
 are loaded before your scripts (obviously).
@@ -58,6 +58,7 @@ require but before your tests:
 ```javascript
     // tests/require-config.js
     require.config({
+        // Assuming your modules are under the /js folder on your test server
         baseUrl: '/js',
     });
 ```
@@ -73,7 +74,15 @@ Then, specify the file in the right order (after `require.js`) in the jsTestDriv
      - tests/require-config.js
      - tests/lib/require-js-testcase.js
      # test cases go here...
+
+    # This allows the modules to be loaded dynamically from a local test server.
+    # Can also use the 'serve' option
+    proxy: 
+     - {matcher: "*", server: "http://localhost:3000"}
 ```
+
+JsTestDriver also appears to have a `serve` directive which could be used
+instead of `proxy` if you don't want to be dependant on a separate server.
 
 Presently, there is no way to specify test-specific config for RequireJS.
 
