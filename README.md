@@ -3,8 +3,8 @@
 A test case for JSTestDriver that allows the dynamic use of RequireJS modules.
 
 ## Credit
-Inspired by [jstd _ amd](https://github.com/mbreeze/jstd_amd), but distinct
-enough that is is not a fork.  jstd _ amd supports stubbing, and you access the
+Inspired by [jstd_amd](https://github.com/mbreeze/jstd_amd), but distinct
+enough that is is not a fork.  jstd_amd supports stubbing, and you access the
 dependencies a bit differently.  Otherwise, I copied the same technique of
 using AsyncTestCase to make sure the dependencies load before the setup method
 is called for the first test.  If you want to stub modules, check out
