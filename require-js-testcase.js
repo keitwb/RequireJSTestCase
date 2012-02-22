@@ -1,11 +1,7 @@
 /*
  * RequireJSTestCase - JSTestDriver test case that integrates with RequireJS.
  * The main idea comes from <https://github.com/mbreeze/jstd_amd>, but does not do
- * stubbing, and assigns the deps directly to `this` in the test.
- *
- * Note that you should run JSTestDriver with the '--reset' flag so that the
- * RequireJS cache is reset so it will reload any changes you make to the
- * application code.
+ * stubbing, and assigns the deps directly to `this.r` in the test.
  *
  * Tested with RequireJS 1.0.5
  */
@@ -36,12 +32,13 @@ window.RequireJSTestCase = function(name, deps, methods) {
     var setUp = methods.setUp;
     methods.setUp = function(queue) {
         queue.call('Loading dependencies', function(callbacks) {
-            console.log(this._depsLoaded);
             if (this._depsLoaded) return;
 
             // The object the dependencies are attached to
             this[depObject] = {};
 
+            // Grab the original config and reuse it with a different urlArgs
+            // Is there any way to reuse config with the public API???
             var config = require.s.contexts._.config;
             config.urlArgs = bust;
 
@@ -62,5 +59,10 @@ window.RequireJSTestCase = function(name, deps, methods) {
         }
     };
 
+    this.name = name;
+    this.deps = deps;
+    this.methods = methods;
+
     AsyncTestCase(name, methods);
 };
+
